@@ -1,48 +1,51 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// 声明开源许可证类型为MIT，允许代码在特定条件下被自由使用
 
-/// @title Minimal ERC20 interface for Uniswap
-/// @notice Contains a subset of the full ERC20 interface that is used in Uniswap V3
+pragma solidity ^0.8.0;
+// 指定Solidity编译器版本必须大于等于0.8.0且小于0.9.0
+
+/// @title Uniswap专用最小化ERC20接口
+/// @notice 包含Uniswap V3中使用到的ERC20接口子集
 interface IERC20Minimal {
-    /// @notice Returns an account's balance in the token
-    /// @param account The account for which to look up the number of tokens it has, i.e. its balance
-    /// @return The number of tokens held by the account
+    /// @notice 查询账户的代币余额
+    /// @param account 要查询余额的账户地址
+    /// @return 该账户持有的代币数量
     function balanceOf(address account) external view returns (uint256);
 
-    /// @notice Transfers the amount of token from the `msg.sender` to the recipient
-    /// @param recipient The account that will receive the amount transferred
-    /// @param amount The number of tokens to send from the sender to the recipient
-    /// @return Returns true for a successful transfer, false for an unsuccessful transfer
+    /// @notice 从调用者账户向接收者转账
+    /// @param recipient 接收代币的账户地址
+    /// @param amount 要转账的代币数量
+    /// @return 成功返回true，失败返回false
     function transfer(address recipient, uint256 amount) external returns (bool);
 
-    /// @notice Returns the current allowance given to a spender by an owner
-    /// @param owner The account of the token owner
-    /// @param spender The account of the token spender
-    /// @return The current allowance granted by `owner` to `spender`
+    /// @notice 查询授权额度
+    /// @param owner 代币持有者地址
+    /// @param spender 被授权使用代币的地址
+    /// @return 当前授权额度
     function allowance(address owner, address spender) external view returns (uint256);
 
-    /// @notice Sets the allowance of a spender from the `msg.sender` to the value `amount`
-    /// @param spender The account which will be allowed to spend a given amount of the owners tokens
-    /// @param amount The amount of tokens allowed to be used by `spender`
-    /// @return Returns true for a successful approval, false for unsuccessful
+    /// @notice 设置代币使用者的授权额度
+    /// @param spender 被授权使用代币的地址
+    /// @param amount 授权额度数量
+    /// @return 成功返回true，失败返回false
     function approve(address spender, uint256 amount) external returns (bool);
 
-    /// @notice Transfers `amount` tokens from `sender` to `recipient` up to the allowance given to the `msg.sender`
-    /// @param sender The account from which the transfer will be initiated
-    /// @param recipient The recipient of the transfer
-    /// @param amount The amount of the transfer
-    /// @return Returns true for a successful transfer, false for unsuccessful
+    /// @notice 从发送者向接收者转账（需有授权）
+    /// @param sender 代币发送者地址
+    /// @param recipient 代币接收者地址
+    /// @param amount 转账代币数量
+    /// @return 成功返回true，失败返回false
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
-    /// @notice Event emitted when tokens are transferred from one address to another, either via `#transfer` or `#transferFrom`.
-    /// @param from The account from which the tokens were sent, i.e. the balance decreased
-    /// @param to The account to which the tokens were sent, i.e. the balance increased
-    /// @param value The amount of tokens that were transferred
+    /// @notice 代币转账事件（transfer或transferFrom触发）
+    /// @param from 代币转出地址（余额减少）
+    /// @param to 代币转入地址（余额增加）
+    /// @param value 转账代币数量
     event Transfer(address indexed from, address indexed to, uint256 value);
 
-    /// @notice Event emitted when the approval amount for the spender of a given owner's tokens changes.
-    /// @param owner The account that approved spending of its tokens
-    /// @param spender The account for which the spending allowance was modified
-    /// @param value The new allowance from the owner to the spender
+    /// @notice 授权额度变更事件
+    /// @param owner 设置授权的账户
+    /// @param spender 被授权的账户
+    /// @param value 新的授权额度
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
